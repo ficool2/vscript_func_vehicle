@@ -773,15 +773,15 @@ function PushRotateMove(velocity, avelocity)
 	local transform = Matrix4x4_Init(origin, angles);
 	local new_origin = origin + velocity * DEFAULT_TICKDT;
 	local new_angles = angles + avelocity * DEFAULT_TICKDT;
-	local new_transform = Matrix4x4_Init(new_origin, new_angles);
-	
 	// ficool2: check clearance into new position
 	// do not try move if no progress can be made
 	local new_trace = Trace(origin, new_origin)
-	if ((origin - new_trace.endpos).LengthSqr() == 0.0)
+	new_origin = new_trace.endpos
+	if ((origin - new_origin).LengthSqr() == 0.0)
 		return
 	
-	vehicle.SetLocalOrigin(new_trace.endpos);	
+	local new_transform = Matrix4x4_Init(new_origin, new_angles);
+	vehicle.SetLocalOrigin(new_origin);	
 	vehicle.SetLocalAngles(new_angles);
 	
 	if (collider)
