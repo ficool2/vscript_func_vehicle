@@ -3476,7 +3476,7 @@ entity
 	"MoveSoundMinPitch" "60"
 	"MoveSoundMinTime" "0"
 	"orientationtype" "1"
-	"origin" "1900 -160 144"
+	"origin" "1900 -160 96"
 	"renderamt" "255"
 	"rendercolor" "255 255 255"
 	"renderfx" "0"
@@ -9963,7 +9963,7 @@ entity
 	"MoveSoundMinPitch" "60"
 	"MoveSoundMinTime" "0"
 	"orientationtype" "1"
-	"origin" "-944 384 16"
+	"origin" "-944 384 -32"
 	"renderamt" "255"
 	"rendercolor" "255 255 255"
 	"renderfx" "0"
@@ -16552,8 +16552,8 @@ cameras
 	"activecamera" "0"
 	camera
 	{
-		"position" "[1225.08 -891.236 641.112]"
-		"look" "[1262.98 -861.672 620.768]"
+		"position" "[581.333 -8.54963 224.221]"
+		"look" "[532.715 8.7881 216.471]"
 	}
 }
 cordons

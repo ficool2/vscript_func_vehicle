@@ -5,7 +5,7 @@ FuncVehicle
 	// Dimensions of vehicle
 	width        = 392.0 // X
 	length       = 144.0 // Y
-	height       = 80.0  // Z
+	height       = 32.0  // Z
 	// Max speed and acceleration
 	speed        = 500.0
 	acceleration = 5.0
