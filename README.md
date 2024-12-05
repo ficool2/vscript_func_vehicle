@@ -33,5 +33,6 @@ There is a example VMF in the `mapsrc` folder that contains two jeep vehicles re
 
 # Limitations
 The vehicle collision is very primitive (remember: `func_vehicle` was made with year 2000 standards!), so don't be surprised if the vehicles get stuck, clip into geometry etc.
+Some of the original func_vehicle code was modified to reduce the chance of such collision bugs.
 
 Vehicles should have enough space to contain players. Keep in mind the player size is inflated when rotated too. The code will attempt to keep players attached as much as possible.
