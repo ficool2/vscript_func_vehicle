@@ -91,7 +91,6 @@ if (!("FuncVehicleInit" in ROOT))
 	::FuncVehiclePlayers <- [];
 	::FuncVehiclePlayersData <- [];
 	::FuncVehicleBuildingsData <- [];
-	::FuncVehicleBuildingDataRemoveQueue <- [];
 	::FuncVehicleTime <- 0.0;
 	::FuncVehicleDispenserID <- 0;
 	
@@ -1172,19 +1171,19 @@ function BlockedPlayer(blocker, blocker_data)
 
 function BlockedBuilding(blocker, blocker_data)
 {
-	if (driver)
+	local player = driver
+	if (player)
 	{
 		// this hack allows friendlyfire against buildings
-		local team = driver.GetTeam();
-		NetProps.SetPropInt(driver, "m_iTeamNum", 0);
-		// the validity check should NOT be necessary as the events should always keep track of valid buildings
-		// however, if somehow that system breaks, this would error and leave a player on team unassigned (which will cause many, many bad things)
-		// so don't let that happen
-		if (blocker.IsValid())
+		local team = player.GetTeam();
+		NetProps.SetPropInt(player, "m_iTeamNum", 0);
+		// failsafe as remaining in unassigned state is dangerous
+		try 
+		{
 			blocker.TakeDamage(4500.0, DMG_VEHICLE, vehicle);
-		else
-			FuncVehicleBuildingDataRemoveQueue.append(blocker_data);
-		NetProps.SetPropInt(driver, "m_iTeamNum", team);
+		}
+		catch (e) {}
+		NetProps.SetPropInt(player, "m_iTeamNum", team);
 	}
 	else
 	{
@@ -1595,13 +1594,7 @@ if (!("FuncVehicleProxy" in ROOT) || !FuncVehicleProxy.IsValid())
 		// update every vehicle
 		foreach (vehicle_scope in FuncVehicleScopes)
 			vehicle_scope.Update();
-			
-		// there was an issue where stale buildings would remain and cause script errors, and due to the unassigned hack, cause a server crash
-		// this is a failsafe to handle this situation, see func_vehicle's BlockedBuilding function
-		foreach (data in FuncVehicleBuildingDataRemoveQueue)
-			FuncVehicleBuildingDataRemoveQueue.remove(data);
-		FuncVehicleBuildingDataRemoveQueue.clear();
-		
+
 		return -1;	
 	}
 	
