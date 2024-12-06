@@ -35,6 +35,7 @@ if (!("FuncVehicleInit" in ROOT))
 	const DMG_VEHICLE = 16;
 	const DMG_VEHICLE_CRIT = 1048592; // DMG_VEHICLE|DMG_ACID
 	const kRenderNone = 10;
+	const TF_DEATH_FEIGN_DEATH = 32;
 	
 	const DEG2RAD = 0.0174532924; // PI/180.0
 	const M_00 = 00; const M_01 = 01; const M_02 = 02; const M_03 = 03;
@@ -775,10 +776,10 @@ function PushRotateMove(velocity, avelocity)
 	local new_angles = angles + avelocity * DEFAULT_TICKDT;
 	// ficool2: check clearance into new position
 	// do not try move if no progress can be made
-	local new_trace = Trace(origin, new_origin)
-	new_origin = new_trace.endpos
+	local new_trace = Trace(origin, new_origin);
+	new_origin = new_trace.endpos;
 	if ((origin - new_origin).LengthSqr() == 0.0)
-		return
+		return;
 	
 	local new_transform = Matrix4x4_Init(new_origin, new_angles);
 	vehicle.SetLocalOrigin(new_origin);	
@@ -1216,7 +1217,7 @@ function Enter(player)
 	driver = player;
 	driver.AddFlag(FL_ATCONTROLS);
 	driver.AddCustomAttribute("no_jump", 1, -1);
-	driver_data = scope.vehicle_data;
+	driver_data = scope.funcvehicle_data;
 	driver_data.vehicle = vehicle;
 	driver_data.vehicle_scope = this;
 	
@@ -1229,7 +1230,7 @@ function Exit()
 {
 	if (driver)
 	{
-		local data = driver.GetScriptScope().vehicle_data;
+		local data = driver.GetScriptScope().funcvehicle_data;
 		data.vehicle = null;
 		data.vehicle_scope = null;
 		
@@ -1277,23 +1278,19 @@ if (!("FuncVehicleEvents" in ROOT))
 		if (!player)
 			return;
 		
-		if (params.team == 0) // unassigned
-		{
-			player.ValidateScriptScope();
-			player.GetScriptScope().vehicle_data <- null;
-			return;
-		}
-		
 		player.ValidateScriptScope();		
 		local scope = player.GetScriptScope();
 		
+		if (!("funcvehicle_data" in scope))
+			scope.funcvehicle_data <- null;
+		
 		// in case player was respawned while alive
-		local data = scope.vehicle_data;
+		local data = scope.funcvehicle_data;
 		if (data && data.vehicle_scope)
 			data.vehicle_scope.Exit();
 		
 		data = FUNCVEHICLE_PLAYERDATA(player);
-		scope.vehicle_data = data;
+		scope.funcvehicle_data = data;
 		
 		if (params.team & 2)
 		{
@@ -1316,7 +1313,7 @@ if (!("FuncVehicleEvents" in ROOT))
 		if (!player)
 			return;
 			
-		if (params.death_flags & 32) // dead ringer
+		if (params.death_flags & TF_DEATH_FEIGN_DEATH)
 			return;
 			
 		local idx = FuncVehiclePlayers.find(player);
@@ -1470,9 +1467,9 @@ if (!("FuncVehicleEvents" in ROOT))
 			
 			// unfortunately this doesn't set the kill icon
 			if (scope.velocity.Length() > 500.0)
-				params.damage_type = DMG_VEHICLE_CRIT; // DMG_VEHICLE|DMG_ACID
+				params.damage_type = DMG_VEHICLE_CRIT;
 			else
-				params.damage_type = DMG_VEHICLE; // DMG_VEHICLE
+				params.damage_type = DMG_VEHICLE;
 	
 			// make driver own the damage
 			params.inflictor = FuncVehicleProxy;

@@ -29,11 +29,11 @@ function OnPostSpawn()
 function OnStartTouch()
 {
 	if (activator)
-		activator.GetScriptScope().vehicle_data.vehicle_controls = self;
+		activator.GetScriptScope().funcvehicle_data.vehicle_controls = self;
 }
 
 function OnEndTouch()
 {
 	if (activator)
-		activator.GetScriptScope().vehicle_data.vehicle_controls = null;
+		activator.GetScriptScope().funcvehicle_data.vehicle_controls = null;
 }
