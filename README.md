@@ -31,6 +31,9 @@ Vehicles are driven by being inside the trigger and using the Action key (defaul
 ## Example
 There is a example VMF in the `mapsrc` folder that contains two jeep vehicles ready to go.
 
+List of maps that use `func_vehicle` so far:
+- [koth_megacrazycar](https://steamcommunity.com/sharedfiles/filedetails/?id=3159601260)
+
 # Limitations
 The vehicle collision is very primitive (remember: `func_vehicle` was made with year 2000 standards!), so don't be surprised if the vehicles get stuck, clip into geometry etc.
 Some of the original func_vehicle code was modified to reduce the chance of such collision bugs.
